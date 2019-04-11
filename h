@@ -15,7 +15,7 @@ case "$OSTYPE" in
     OS="linux"
 esac
 
-TARGET_VERSION=$(helm version --template '{{ .Server.SemVer }}')
+TARGET_VERSION=$(helm version --template '{{ .Server.SemVer }}' 2> /dev/null || (kubectl get deployments -n kube-system tiller-deploy -o yaml | grep image: | cut -d: -f3))
 
 TARGET=$HX_PATH/helm-$TARGET_VERSION
 
