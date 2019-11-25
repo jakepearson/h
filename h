@@ -15,13 +15,25 @@ case "$OSTYPE" in
     OS="linux"
 esac
 
+CPU_ARCHITECTURE=$(uname -m)
+case $CPU_ARCHITECTURE in
+  armv5*) CPU_ARCHITECTURE="armv5";;
+  armv6*) CPU_ARCHITECTURE="armv6";;
+  armv7*) CPU_ARCHITECTURE="arm";;
+  aarch64) CPU_ARCHITECTURE="arm64";;
+  x86) CPU_ARCHITECTURE="386";;
+  x86_64) CPU_ARCHITECTURE="amd64";;
+  i686) CPU_ARCHITECTURE="386";;
+  i386) CPU_ARCHITECTURE="386";;
+esac
+
 function GET_HELM_VERSION() {
   VERSION=$1
   HELM_PATH=$HX_PATH/helm-$VERSION
   HELM_TAR="$HELM_PATH.tar.gz"
 
-  curl -L -o "$HELM_TAR" "https://get.helm.sh/helm-$VERSION-$OS-amd64.tar.gz"
-  tar --extract --file="$HELM_TAR" --strip=1 --directory="$HX_PATH" $OS-amd64/helm 
+  curl -L -o "$HELM_TAR" "https://get.helm.sh/helm-$VERSION-$OS-$CPU_ARCHITECTURE.tar.gz"
+  tar --extract --file="$HELM_TAR" --strip=1 --directory="$HX_PATH" $OS-$CPU_ARCHITECTURE/helm 
   mv "$HX_PATH/helm" "$HELM_PATH"
   rm "$HELM_TAR"
 }
@@ -37,7 +49,6 @@ elif [ ! -f "$LOCAL_HELM" ]; then
 fi
 
 TARGET_VERSION=$($LOCAL_HELM version --template '{{ .Server.SemVer }}')
-echo "TARGET-$TARGET_VERSION"
 TARGET="$HX_PATH/helm-$TARGET_VERSION"
 
 if [ ! -f "$TARGET" ]; then
