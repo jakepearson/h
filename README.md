@@ -1,6 +1,8 @@
 # Automatically run the correct version of helm every time
 
-This script will read the version of the Helm server you are running. It will then download a new version of `helm` if needed and run your command with new `helm`. I named it `h` since most everyone appears to alias `helm` to `h` anyway.
+This script will read the version of the Helm server you are running, download a new version of the `helm` CLI to your machine if needed, and run your command with a version of `helm` that matches your server.
+
+I named it `h` since most everyone appears to alias `helm` to `h` anyway.
 
 ![So Simple](https://media.giphy.com/media/l4pTosVr0iHCJ11hm/giphy.gif)
 
