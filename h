@@ -33,7 +33,7 @@ function GET_HELM_VERSION() {
   HELM_TAR="$HELM_PATH.tar.gz"
 
   curl -L -o "$HELM_TAR" "https://get.helm.sh/helm-$VERSION-$OS-$CPU_ARCHITECTURE.tar.gz"
-  tar --extract --file="$HELM_TAR" --strip=1 --directory="$HX_PATH" $OS-$CPU_ARCHITECTURE/helm 
+  tar --extract --file="$HELM_TAR" --strip=1 --directory="$HX_PATH" $OS-$CPU_ARCHITECTURE/helm
   mv "$HX_PATH/helm" "$HELM_PATH"
   rm "$HELM_TAR"
 }
@@ -48,7 +48,7 @@ elif [ ! -f "$LOCAL_HELM" ]; then
   GET_HELM_VERSION $KNOWN_VERSION
 fi
 
-TARGET_VERSION=$($LOCAL_HELM version --template '{{ .Server.SemVer }}')
+TARGET_VERSION=$($LOCAL_HELM version --template '{{ .Server.SemVer }}' || echo $KNOWN_VERSION)
 TARGET="$HX_PATH/helm-$TARGET_VERSION"
 
 if [ ! -f "$TARGET" ]; then
